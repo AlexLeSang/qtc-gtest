@@ -4,24 +4,25 @@ using namespace QtcGtest::Internal;
 
 namespace
 {
-  const QColor goodColor = QColor ("#33CC66");
-  const QColor badColor = QColor ("#FF6666");
-  const QColor noteColor = QColor ("#F0E68C");
+  const QColor goodColor = QColor ("#129E2E");
+  const QColor badColor = QColor ("#C71919");
+  const QColor noteColor = QColor ("#C4AC40");
+  const QColor textColor = QColor ("#000000");
 }
 
 TestModel::TestModel(QObject *parent) :
   QStandardItemModel(parent), errorCount_ (0)
 {
-  columnNames_.insert (int (ColumnName), tr ("Name"));
+  columnNames_.insert (int (ColumnName), tr ("Test"));
   columnNames_.insert (int (ColumnPassed), tr ("Passed"));
   columnNames_.insert (int (ColumnFailed), tr ("Failed"));
-  columnNames_.insert (int (ColumnTime), tr ("Time"));
+  columnNames_.insert (int (ColumnTime), tr ("Time (ms)"));
   columnNames_.insert (int (ColumnType), tr ("Type"));
   setColumnCount (ColumnCount);
-  setHeaderData (int (ColumnName), Qt::Horizontal, tr ("Name"));
+  setHeaderData (int (ColumnName), Qt::Horizontal, tr ("Test"));
   setHeaderData (int (ColumnPassed), Qt::Horizontal, tr ("Passed"));
   setHeaderData (int (ColumnFailed), Qt::Horizontal, tr ("Failed"));
-  setHeaderData (int (ColumnTime), Qt::Horizontal, tr ("Time"));
+  setHeaderData (int (ColumnTime), Qt::Horizontal, tr ("Time (ms)"));
   setHeaderData (int (ColumnType), Qt::Horizontal, tr ("Type"));
 }
 
@@ -187,6 +188,7 @@ void TestModel::setRowColor(const QModelIndex &index, const QColor &color)
   for (int i = 0; i < ColumnCount; ++i)
   {
     itemFromIndex (index.sibling (row, i))->setBackground (color);
+    itemFromIndex (index.sibling (row, i))->setForeground (textColor);
   }
 }
 

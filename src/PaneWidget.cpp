@@ -21,7 +21,9 @@ PaneWidget::PaneWidget(const QSharedPointer<TestModel> &model, QWidget *parent) 
 
   ui->caseView->setModel (proxy_);
   ui->caseView->hideColumn (TestModel::ColumnType);
-  ui->caseView->header ()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  ui->caseView->header ()->setSectionResizeMode(QHeaderView::Interactive);
+  ui->caseView->header ()->setSectionResizeMode(TestModel::ColumnName, QHeaderView::Stretch);
+//  ui->caseView->header ()->setSectionResizeMode(TestModel::ColumnPassed, QHeaderView::Interactive);
   ui->caseView->setItemDelegate (new AutoToolTipDelegate (ui->caseView));
 }
 
