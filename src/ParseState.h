@@ -14,6 +14,7 @@ namespace QtcGtest {
 
       bool isGoogleTestRun;
       QString projectPath;
+      QString customPath;
       QString currentCase;
       QString currentTest;
       int passedCount;

@@ -11,6 +11,13 @@
 #include "TestModel.h"
 #include "ParseState.h"
 
+#include <iostream>
+
+namespace
+{
+  static const QString testPathVariable = QStringLiteral("QTC_GTEST_ROOT");
+}
+
 using namespace QtcGtest::Internal;
 
 OutputPane::OutputPane(QObject *parent) :
@@ -179,8 +186,17 @@ void OutputPane::handleRunStart(ProjectExplorer::RunControl *control)
   model_->clear ();
   totalsLabel_->clear ();
   disabledLabel_->clear ();
+  const Utils::Environment env = control->runConfiguration()->target()->activeBuildConfiguration()->environment();
+
+  if (env.hasKey(testPathVariable)) {
+    state_->customPath = env.value(testPathVariable);
+  }
+  else {
+    state_->customPath = QString();
+  }
   state_->projectPath = control->runConfiguration ()->target ()->
                         activeBuildConfiguration ()->buildDirectory ().toString ();
+  //std::cerr << "state_->projectPath: " << state_->projectPath.toStdString() << std::endl;
   connect (control, SIGNAL (appendMessage(ProjectExplorer::RunControl *, const QString &, Utils::OutputFormat )),
            this, SLOT (parseMessage(ProjectExplorer::RunControl *, const QString &, Utils::OutputFormat )));
 

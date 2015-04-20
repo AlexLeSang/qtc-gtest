@@ -1,5 +1,6 @@
 #include <QFileInfo>
 #include <QRegularExpression>
+#include <QDir>
 
 #include "OutputParser.h"
 #include "ParseState.h"
@@ -132,10 +133,31 @@ void OutputParser::parseMessage(const QString &line, TestModel &model, ParseStat
     QFileInfo info (file);
     if (info.isRelative ())
     {
-      file = state.projectPath + QLatin1Char ('/') + match.captured (FailDetailFileName);
+      file = state.projectPath + QDir::separator() + match.captured (FailDetailFileName);
+    }
+
+    QString detail = line;
+    if (!state.customPath.isEmpty())
+    {
+      QStringList filenameSplitList = file.split(QDir::separator());
+      const QStringList customPathSplitList = state.customPath.split(QDir::separator());
+      QStringList detailSplitList = detail.split(QDir::separator());
+
+      for (int i = 0; i < customPathSplitList.size(); ++i) {
+        filenameSplitList[i] = customPathSplitList[i];
+        detailSplitList[i] = customPathSplitList[i];
+      }
+      file.clear();
+      for (int i = 1; i < filenameSplitList.size(); ++i) {
+        file += QDir::separator() + filenameSplitList[i];
+      }
+      detail.clear();
+      for (int i = 1; i < filenameSplitList.size(); ++i) {
+        detail += QDir::separator() + detailSplitList[i];
+      }
     }
     int lineNumber = match.captured (FailDetailLine).toInt ();
-    model.addTestError (state.currentTest, state.currentCase, line, file, lineNumber);
+    model.addTestError (state.currentTest, state.currentCase, detail, file, lineNumber);
     return;
   }
 
