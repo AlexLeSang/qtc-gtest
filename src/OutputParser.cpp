@@ -143,17 +143,23 @@ void OutputParser::parseMessage(const QString &line, TestModel &model, ParseStat
       const QStringList customPathSplitList = state.customPath.split(QDir::separator());
       QStringList detailSplitList = detail.split(QDir::separator());
 
-      for (int i = 0; i < customPathSplitList.size(); ++i) {
-        filenameSplitList[i] = customPathSplitList[i];
-        detailSplitList[i] = customPathSplitList[i];
-      }
-      file.clear();
-      for (int i = 1; i < filenameSplitList.size(); ++i) {
-        file += QDir::separator() + filenameSplitList[i];
-      }
-      detail.clear();
-      for (int i = 1; i < filenameSplitList.size(); ++i) {
-        detail += QDir::separator() + detailSplitList[i];
+      if (filenameSplitList.size() > customPathSplitList.size())
+      {
+        for (int i = 0; i < customPathSplitList.size(); ++i)
+        {
+          filenameSplitList[i] = customPathSplitList[i];
+          detailSplitList[i] = customPathSplitList[i];
+        }
+        file.clear();
+        for (int i = 1; i < filenameSplitList.size(); ++i)
+        {
+          file += QDir::separator() + filenameSplitList[i];
+        }
+        detail.clear();
+        for (int i = 1; i < filenameSplitList.size(); ++i)
+        {
+          detail += QDir::separator() + detailSplitList[i];
+        }
       }
     }
     int lineNumber = match.captured (FailDetailLine).toInt ();
