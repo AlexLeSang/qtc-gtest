@@ -143,7 +143,8 @@ void OutputParser::parseMessage(const QString &line, TestModel &model, ParseStat
       const QStringList customPathSplitList = state.customPath.split(QDir::separator());
       QStringList detailSplitList = detail.split(QDir::separator());
 
-      if (filenameSplitList.size() > customPathSplitList.size())
+      if ((filenameSplitList.size() > customPathSplitList.size()) &&
+          (detailSplitList.size() > customPathSplitList.size()))
       {
         for (int i = 0; i < customPathSplitList.size(); ++i)
         {
