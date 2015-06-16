@@ -71,6 +71,7 @@ namespace QtcGtest {
         // toolBarWidgets
         QLabel* totalsLabel_;
         QLabel* disabledLabel_;
+        QLabel* statusLabel_;
         QToolButton* togglePopupButton_;
         QToolButton* togglePassedButton_;
     };
