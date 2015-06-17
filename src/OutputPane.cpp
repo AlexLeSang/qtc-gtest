@@ -10,7 +10,6 @@
 #include "PaneWidget.h"
 #include "TestModel.h"
 #include "ParseState.h"
-#include "Constants.h"
 
 #include <iostream>
 
@@ -208,26 +207,11 @@ void OutputPane::handleRunFinish (ProjectExplorer::RunControl *control)
   if (state_->isGoogleTestRun)
   {
     widget_->spanColumns ();
-    totalsLabel_->setText (tr ("Total: passed %1 of %2 (%3 ms),").arg (
+    totalsLabel_->setText (tr ("Total: passed %1 of %2 (%3 ms).").arg (
                              state_->passedTotalCount).arg (
                              state_->passedTotalCount +
                              state_->failedTotalCount).arg (state_->totalTime));
-
-    QString color;
-    if (state_->failedTotalCount > 0) {
-      color = QtcGtest::Constants::badColor.name();
-    }
-    else {
-      color = QtcGtest::Constants::goodColor.name();
-    }
-    QString styleSheet = QString(QStringLiteral("QLabel { background-color : %1; color : %2 }"))
-                         .arg(color)
-                         .arg(QtcGtest::Constants::textColor.name());
-
-    totalsLabel_->setStyleSheet(styleSheet);
-    disabledLabel_->setStyleSheet(styleSheet);
-
-    disabledLabel_->setText(tr ("Disabled tests: %1").arg (state_->disabledCount));
+    disabledLabel_->setText(tr ("Disabled tests: %1.").arg (state_->disabledCount));
     if (togglePopupButton_->isChecked())
     {
       popup (WithFocus);

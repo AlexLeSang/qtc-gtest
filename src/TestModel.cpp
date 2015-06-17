@@ -1,8 +1,14 @@
 #include "TestModel.h"
 
-#include "Constants.h"
-
 using namespace QtcGtest::Internal;
+
+namespace
+{
+  const QColor goodColor = QColor ("#129E2E");
+  const QColor badColor = QColor ("#C71919");
+  const QColor noteColor = QColor ("#C4AC40");
+  const QColor textColor = QColor ("#000000");
+}
 
 TestModel::TestModel(QObject *parent) :
   QStandardItemModel(parent), errorCount_ (0)
@@ -182,7 +188,7 @@ void TestModel::setRowColor(const QModelIndex &index, const QColor &color)
   for (int i = 0; i < ColumnCount; ++i)
   {
     itemFromIndex (index.sibling (row, i))->setBackground (color);
-    itemFromIndex (index.sibling (row, i))->setForeground (QtcGtest::Constants::textColor);
+    itemFromIndex (index.sibling (row, i))->setForeground (textColor);
   }
 }
 
@@ -209,7 +215,7 @@ void TestModel::addNote(const QString &text)
   row.at(ColumnFailed)->setText (QLatin1String ("-1"));
   invisibleRootItem ()->appendRow (row);
   QModelIndex noteIndex = indexFromItem (row.first ());
-  setRowColor (noteIndex, QtcGtest::Constants::noteColor);
+  setRowColor (noteIndex, noteColor);
 }
 
 void TestModel::addCase(const QString &name)
@@ -264,7 +270,7 @@ void TestModel::updateTest(const QString &name, const QString &caseName,
   setData (testIndex.sibling (row, ColumnPassed), isOk ? 1 : 0);
   setData (testIndex.sibling (row, ColumnFailed), isOk ? 0 : 1);
   setData (testIndex.sibling (row, ColumnTime), time);
-  setRowColor (testIndex, isOk ? QtcGtest::Constants::goodColor : QtcGtest::Constants::badColor);
+  setRowColor (testIndex, isOk ? goodColor : badColor);
   if (!isOk)
   {
     // Set ColumnFailed = -1 for fail messages to filter it later in proxy model.
@@ -289,7 +295,7 @@ void TestModel::updateCase(const QString &name, int passedCount,
   setData (caseIndex.sibling (row, ColumnPassed), passedCount);
   setData (caseIndex.sibling (row, ColumnFailed), failedCount);
   setData (caseIndex.sibling (row, ColumnTime), time);
-  setRowColor (caseIndex, (failedCount == 0) ? QtcGtest::Constants::goodColor : QtcGtest::Constants::badColor);
+  setRowColor (caseIndex, (failedCount == 0) ? goodColor : badColor);
 }
 
 void TestModel::renameTest(const QString &oldName, const QString &newName,
