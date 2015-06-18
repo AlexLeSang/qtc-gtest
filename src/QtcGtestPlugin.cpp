@@ -2,6 +2,7 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QCoreApplication>
+#include <QAbstractItemModel>
 
 #include <coreplugin/icore.h>
 #include <coreplugin/coreconstants.h>
@@ -58,11 +59,13 @@ bool QtcGtestPlugin::initialize(const QStringList &arguments, QString *errorStri
            pane, SLOT (handleRunFinish(ProjectExplorer::RunControl *)));
   addAutoReleasedObject (pane);
 
+  const QAbstractItemModel* model = DocumentModel::model ();
 
-  connect (DocumentModel::model (),
+  connect (model,
            SIGNAL (dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
            testProject_,
            SLOT (handleDocumentsChange(const QModelIndex &, const QModelIndex &, const QVector<int> &)));
+
   connect (DocumentModel::model (),
            SIGNAL (rowsAboutToBeRemoved(const QModelIndex &, int, int)),
            testProject_,

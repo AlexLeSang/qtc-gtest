@@ -9,6 +9,9 @@
 #include <projectexplorer/session.h>
 #include <projectexplorer/projectexplorer.h>
 #include <projectexplorer/target.h>
+#include <coreplugin/editormanager/editormanager.h>
+#include <coreplugin/idocument.h>
+#include <utils/fileutils.h>
 
 #include "TestProject.h"
 #include "CustomRunConfiguration.h"
@@ -95,7 +98,7 @@ void TestProject::checkCurrent()
   {
     return;
   }
-  QString file = document->filePath ();
+  QString file = document->filePath ().toString();
   QStringList files = project->files (Project::ExcludeGeneratedFiles);
   if (!files.contains (file))
   {
@@ -207,7 +210,7 @@ QStringList TestProject::getChangedFiles(int beginRow, int endRow, bool modified
     }
     if (document->isModified () == modifiedFlag) // May not belong to project
     {
-      files << document->filePath ();
+      files << document->filePath ().toString();
     }
   }
   return files;
@@ -227,8 +230,14 @@ CustomRunConfiguration *TestProject::parse(Project *project)
   dependencyTable_.clear ();
   for (Snapshot::const_iterator i = snapshot.begin (), end = snapshot.end (); i != end; ++i)
   {
-    const QString& fileName = i.key ();
-    dependencyTable_[fileName] = snapshot.filesDependingOn (fileName);
+    const QString& fileName = i.key ().toString();
+    QStringList dependingFiles;
+    {
+      Utils::FileNameList fileNameList = snapshot.filesDependingOn (fileName);
+      dependingFiles.reserve(fileNameList.size());
+      std::transform(fileNameList.begin(), fileNameList.end(), dependingFiles.begin(), [](const Utils::FileName& fName) { return fName.toString(); });
+    }
+    dependencyTable_[fileName] = dependingFiles;
   }
   gtestIncludeFiles_ = gtestMainIncludes ();
   if (gtestIncludeFiles_.isEmpty ())
