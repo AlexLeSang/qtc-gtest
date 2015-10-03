@@ -13,4 +13,5 @@ isEmpty(IDE_BUILD_TREE){
     CONFIG(debug, debug|release):IDE_BUILD_TREE=$$PWD/../build-qtcreator-3.5.0-Qt_5_4_1_GCC_64bit-Release
     contains(QMAKE_TARGET.arch, x86):IDE_BUILD_TREE=$$PWD/../qtcreator-latest/release-x86
     msvc:IDE_BUILD_TREE=$$PWD/../qtcreator-latest/release-vc10
+    win32-msvc2013:IDE_BUILD_TREE=$$PWD/../qtcreator-latest/release-vc12
 }

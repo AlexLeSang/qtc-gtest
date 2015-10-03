@@ -1,4 +1,14 @@
 # Changelog
+## v 3.5.0_1
+- Fixed possible freeze.
+## v 3.5.0
+- QTC version update
+- Fixed wrong dynamic libraries search paths
+- Fixed subdirs projects parse errors
+- Default keybindings changed
+## v 3.4.0
+- QTC version update
+- Now capture single disabled test
 ## v 3.3.1
 - Fixed wrong handling of parameterized tests failure.
 - Improved msvc support.

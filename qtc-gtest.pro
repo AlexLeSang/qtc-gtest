@@ -1,6 +1,6 @@
 DEFINES += QTCGTEST_LIBRARY
 
-VERSION_SUFFIX = ""
+VERSION_SUFFIX = "_1"
 
 include(paths.pri)
 
@@ -42,7 +42,8 @@ TRANSLATIONS += \
 OTHER_FILES += \
     LICENSE.md \
     README.md \
-    images/README.md
+    images/README.md \
+    util/README.md
 
 PROVIDER = Gres
 
